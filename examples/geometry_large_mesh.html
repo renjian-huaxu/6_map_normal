@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>MThree.js - geometry - cube</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+			body {
+				background:#000;
+				color:#fff;
+				padding:0;
+				margin:0;
+				overflow:hidden;
+				font-family:georgia;
+				text-align:center;
+			}
+    </style>
+</head>
+
+<body>
+
+    <pre id="log"></pre>
+
+    <script type="text/javascript" src="../build/MThree.js"></script>
+
+    <script type="text/javascript">
+
+        var SCREEN_WIDTH = window.innerWidth;
+        var SCREEN_HEIGHT = window.innerHeight;
+        var FLOOR = -250;
+
+        var container;
+        var stats;
+
+        var camera;
+        var scene;
+        var webglRenderer;
+
+        var mesh, zmesh, lightMesh;
+
+        var directionalLight, pointLight;
+
+        var mouseX = 0;
+        var mouseY = 0;
+
+        var windowHalfX = window.innerWidth >> 1;
+        var windowHalfY = window.innerHeight >> 1;
+
+        document.addEventListener('mousemove', onDocumentMouseMove, false);
+
+        init();
+
+        // loop();
+
+        setInterval(loop, 1000 / 60);
+
+        function addMesh(geometry, scale, x, y, z, rx, ry, rz, material) {
+
+            mesh = new MThree.Mesh(geometry, material);
+            mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
+            mesh.position.x = x;
+            mesh.position.y = y;
+            mesh.position.z = z;
+            mesh.rotation.x = rx;
+            mesh.rotation.y = ry;
+            mesh.rotation.z = rz;
+            mesh.overdraw = true;
+            mesh.updateMatrix();
+            scene.addObject(mesh);
+
+        }
+
+        function init() {
+
+            container = document.createElement('div');
+            document.body.appendChild(container);
+
+            camera = new MThree.Camera(50, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 100000);
+            camera.position.z = 1500;
+            camera.updateMatrix();
+
+            scene = new MThree.Scene();
+
+            // LIGHTS
+
+            var ambient = new MThree.AmbientLight(0x101010);
+            scene.addLight(ambient);
+
+            directionalLight = new MThree.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.x = 1;
+            directionalLight.position.y = 1;
+            directionalLight.position.z = 2;
+            directionalLight.position.normalize();
+            scene.addLight(directionalLight);
+
+            pointLight = new MThree.PointLight(0xffaa00);
+            pointLight.position.x = 0;
+            pointLight.position.y = 0;
+            pointLight.position.z = 0;
+            scene.addLight(pointLight);
+
+            // light representation
+            sphere = new MThree.Sphere(100, 16, 8, 1);
+            lightMesh = new MThree.Mesh(sphere, new MThree.MeshBasicMaterial({ color: 0xffaa00 }));
+            lightMesh.scale.x = lightMesh.scale.y = lightMesh.scale.z = 0.05;
+            lightMesh.position = pointLight.position;
+            lightMesh.overdraw = true;
+            lightMesh.updateMatrix();
+            scene.addObject(lightMesh);
+
+
+            webglRenderer = new MThree.WebGLRenderer(scene);
+            webglRenderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+            container.appendChild(webglRenderer.domElement);
+
+            var s = (new Date).getTime();
+
+            var loader = new MThree.Loader();
+            //loader.loadAscii( 'obj/lucy/Lucy100k_slim.js', function( geometry ) { createScene( geometry, s ) } );
+            loader.loadBinary('obj/lucy/Lucy100k_bin.js', function (geometry) { createScene(geometry, s) }, "obj/lucy");
+
+        }
+
+        function createScene(geometry, start) {
+
+            addMesh(geometry, 0.75, 900, 0, 0, 0, 0, 0, new MThree.MeshPhongMaterial({ ambient: 0x030303, color: 0x030303, specular: 0x990000, shininess: 30 }));
+            addMesh(geometry, 0.75, 300, 0, 0, 0, 0, 0, new MThree.MeshFaceMaterial());
+            addMesh(geometry, 0.75, -300, 0, 0, 0, 0, 0, new MThree.MeshPhongMaterial({ ambient: 0x030303, color: 0x111111, specular: 0xffaa00, shininess: 10 }));
+            addMesh(geometry, 0.75, -900, 0, 0, 0, 0, 0, new MThree.MeshPhongMaterial({ ambient: 0x030303, color: 0x555555, specular: 0x666666, shininess: 10 }));
+
+            log("geometry.vertices: " + geometry.vertices.length);
+            log("geometry.faces: " + geometry.faces.length);
+
+            log("model loaded and created in " + ((new Date).getTime() - start) + " ms");
+
+        }
+
+        function onDocumentMouseMove(event) {
+
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+
+        }
+
+        var r = 0;
+
+        function loop() {
+
+            camera.position.x += (mouseX - camera.position.x) * .05;
+            camera.position.y += (- mouseY - camera.position.y) * .05;
+            camera.updateMatrix();
+
+            lightMesh.position.x = 700 * Math.cos(r);
+            lightMesh.position.z = 700 * Math.sin(r);
+            lightMesh.updateMatrix();
+
+            r += 0.01;
+
+            webglRenderer.render(scene, camera);
+        }
+
+        function log(text) {
+			
+            var e = document.getElementById("log");
+            e.innerHTML = text + "<br/>" + e.innerHTML;
+            
+        }
+
+    </script>
+
+</body>
+
+</html>

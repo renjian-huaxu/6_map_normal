@@ -1,0 +1,21 @@
+{
+  "name": "three-learn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node rollup.watch.js",
+    "build": "rollup -c rollup.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "rollup": "^2.79.1",
+    "rollup-plugin-babel": "^4.4.0"
+  }
+}

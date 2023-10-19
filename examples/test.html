@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../build/MThree.js"></script>
+	<!-- <script src="../examples/objects/Qrcode.js"></script> -->
+    <script>
+        	var SCREEN_WIDTH = window.innerWidth;
+			var SCREEN_HEIGHT = window.innerHeight;
+			var AMOUNT = 100;
+
+			var container;
+
+			var camera;
+			var scene;
+			var webglRenderer;
+
+			var mesh;
+
+			var mouseX = 0;
+			var mouseY = 0;
+
+			var windowHalfX = window.innerWidth >> 1;
+			var windowHalfY = window.innerHeight >> 1;
+
+
+			document.addEventListener('mousemove', onDocumentMouseMove, false);
+            init();
+			loop();
+			// setInterval(loop, 1000/60);
+
+            function init() {
+                container = document.createElement('div');
+				document.body.appendChild(container);
+
+				console.log(MThree)
+
+				camera = new MThree.Camera( 75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 100000 );
+				// camera.position.x = - 5000;
+				// camera.position.y = 50000;
+				camera.position.z = 500
+
+				scene = new MThree.Scene();
+
+
+
+				// PLANE
+
+				mesh = new MThree.Mesh( new MThree.Plane( 100, 100 ), new MThree.MeshBasicMaterial( { color: Math.random() * 0xffffff } ) );
+				mesh.position.y = 0;
+				mesh.scale.x = mesh.scale.y = mesh.scale.z = 2;
+				mesh.doubleSided = true;
+				mesh.updateMatrix();
+				scene.addObject(mesh);
+
+
+
+
+				// // LIGHTS
+
+				// var ambient = new MThree.AmbientLight( 0x101010 );
+				// scene.addLight( ambient );
+
+				// directionalLight = new MThree.DirectionalLight( 0xffffff );
+				// directionalLight.position.y = -70;
+				// directionalLight.position.z = 100;
+				// directionalLight.position.normalize();
+				// scene.addLight( directionalLight );
+
+				// pointLight = new MThree.PointLight( 0xffaa00 );
+				// pointLight.position.x = 0;
+				// pointLight.position.y = 0;
+				// pointLight.position.z = 120;
+				// //scene.addLight( pointLight );
+
+
+
+
+				// // CUBES
+
+				// var cube = new MThree.Cube(100, 100, 100);
+
+				// mesh = new MThree.Mesh( cube, new MThree.MeshBasicMaterial( { color: 0x0000ff, opacity: 0.5 } ) );
+				// mesh.position.x = 100;
+				// mesh.rotation.x = Math.random();
+				// mesh.rotation.y = Math.random();
+				// // mesh.scale.x = mesh.scale.y = mesh.scale.z = 2;
+				// mesh.updateMatrix();
+				// scene.addObject(mesh);
+
+				// mesh = new MThree.Mesh( cube, new MThree.MeshBasicMaterial( { color: Math.random() * 0xffffff } ) );
+				// mesh.position.x = 300;
+				// mesh.position.y = 300;
+				// mesh.rotation.x = Math.random();
+				// mesh.rotation.y = Math.random();
+				// // mesh.scale.x = mesh.scale.y = mesh.scale.z = 2;
+				// mesh.updateMatrix();
+				// scene.addObject(mesh);
+
+				
+				
+				// // CYLINDER
+
+				// mesh = new MThree.Mesh( new MThree.Cylinder( 10, 20, 100, 200, - 50, - 20 ), new MThree.MeshBasicMaterial( { color: Math.random() * 0xffffff } ) );
+				// mesh.position.x = 100;
+				// // mesh.scale.x = mesh.scale.y = mesh.scale.z = 2;
+				// mesh.updateMatrix();
+				// scene.addObject(mesh);
+
+				
+
+				// const sphere = new MThree.Sphere( 100, 16, 8, 1 );
+
+				// mesh = new MThree.Mesh( sphere, [ 
+				// 	new MThree.MeshLambertMaterial( { color: 0xffffff } ), 
+				// 	new MThree.MeshBasicMaterial( { color: 0x000000, wireframe: true,  wireframe_linewidth: 1.5 } ) ] 
+				// );
+
+				// scene.addObject(mesh);
+
+
+				// QRCODE
+
+				// mesh = new MThree.Mesh(new Qrcode(), new MThree.MeshFaceColorFillMaterial());
+				// mesh.scale.x = mesh.scale.y = mesh.scale.z = 2;
+				// mesh.updateMatrix();
+				// scene.add(mesh);
+				
+                webglRenderer = new MThree.WebGLRenderer();
+				webglRenderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				container.appendChild( webglRenderer.domElement );
+            }
+
+            function onDocumentMouseMove(event) {
+
+                mouseX = ( event.clientX - windowHalfX );
+                mouseY = ( event.clientY - windowHalfY );
+
+            }
+
+            
+			function loop() {
+
+                camera.position.x += ( mouseX - camera.position.x ) * .05;
+                camera.position.y += ( - mouseY - camera.position.y ) * .05;
+                camera.updateMatrix();
+
+                mesh.rotation.y += 0.01;
+                mesh.updateMatrix();
+
+                webglRenderer.render( scene, camera );
+            }
+
+    </script>
+</body>
+</html>
