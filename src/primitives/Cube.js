@@ -8,6 +8,7 @@ import Vertex from "../core/Vertex";
 export default class Cube extends Geometry {
 
     constructor(width, height, depth, segments_width, segments_height, materials, flipped, sides) {
+        
         super()
 
         var scope = this,

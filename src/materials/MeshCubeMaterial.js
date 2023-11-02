@@ -5,6 +5,7 @@ const MeshCubeMaterialCounter = { value: 0 };
 export default class MeshCubeMaterial {
     
     constructor(parameters) {
+
         this.id = MeshCubeMaterialCounter.value ++;
 
         this.env_map = null;
@@ -19,6 +20,7 @@ export default class MeshCubeMaterial {
     }
 
     toString() {
+        
         return 'THREE.MeshCubeMaterial( ' +
 			'id: ' + this.id + '<br/>' +
 			'env_map: ' + this.env_map + ' )';

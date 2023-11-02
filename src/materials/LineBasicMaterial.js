@@ -26,6 +26,7 @@ export default class LineBasicMaterial {
     }
 
     toString() {
+        
         return 'THREE.LineBasicMaterial (<br/>' +
         'color: ' + this.color + '<br/>' +
         'opacity: ' + this.opacity + '<br/>' +

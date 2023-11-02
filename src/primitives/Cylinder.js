@@ -7,6 +7,7 @@ import Vertex from "../core/Vertex";
 export default class Cylinder extends Geometry {
 
     constructor(numSegs, topRad, botRad, height, topOffset, botOffset) {
+        
         super()
 
         var scope = this,

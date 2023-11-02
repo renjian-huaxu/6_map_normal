@@ -8,10 +8,12 @@ const AdditiveBlending = 1;
 const SubtractiveBlending = 2;
 
 export {
+
     FlatShading,    
     SmoothShading,
     
     NormalBlending,
     AdditiveBlending,
     SubtractiveBlending
+    
 }

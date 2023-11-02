@@ -13,87 +13,18 @@
 				overflow:hidden;
 			}
 
-			a {	color: #ffffff;	}
-
-			#info {
-				position: absolute;
-				top: 0px; width: 100%;
-				color: #ffffff;
-				padding: 5px;
-				font-family:Monospace;
-				font-size:13px;
-				text-align:center;
-				z-index:1000; 
-			}
-			
-			#oldie {
-				font-family:monospace;
-				font-size:13px;
-				
-				text-align:center;
-				background:rgb(200,100,0);
-				color:#fff;
-				padding:1em;
-				
-				width:475px;
-				margin:5em auto 0;
-				
-				border:solid 2px #fff;
-				border-radius:10px;
-				
-				display:none;
-			}
-			
-			#vt { display:none } 
-			#vt, #vt a { color:orange; }
-			.code { }
-			
-			#log { position:absolute; top:50px; text-align:left; display:block; z-index:100 }
 		</style>
 	</head>
 
 	<body>
-		<pre id="log"></pre>
-		
-		<div id="info">
-			<a href="http://github.com/mrdoob/MThree.js" target="_blank">MThree.js</a> - webgl (<span id="description">normal + ao + displacement</span>) map demo. 
-			ninja head from <a href="http://developer.amd.com/archive/gpu/MeshMapper/pages/default.aspx" target="_blank">AMD GPU MeshMapper</a>
-			
-			<div id="vt">displacement mapping needs vertex textures (GPU with Shader Model 3.0)<br/>
-			on Windows use <span class="code">Chrome --use-gl=desktop</span> or Firefox 4<br/>
-			please star this <a href="http://code.google.com/p/chromium/issues/detail?id=52497">Chrome issue</a> to get ANGLE support
-			</div>
-		</div>
-		
-		<center>
-		<div id="oldie">
-			Sorry, your browser doesn't support <a href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation">WebGL</a> 
-			and <a href="http://www.whatwg.org/specs/web-workers/current-work/">Web Workers</a>.<br/>
-			<br/>
-			Please try in 
-			<a href="http://www.chromium.org/getting-involved/dev-channel">Chrome 9+</a> / 
-			<a href="http://www.mozilla.com/en-US/firefox/all-beta.html">Firefox 4+</a> / 
-			<a href="http://nightly.webkit.org/">Safari OSX 10.6+</a>
-		</div>
-		</center>
-
 		<script type="text/javascript" src="../build/MThree.js"></script> 
         <script type="text/javascript" src="../src/extras/ShaderUtils.js"></script>
         <script type="text/javascript" src="../src/extras/ImageUtils.js"></script>
         <script type="text/javascript" src="../src/extras/SceneUtils.js"></script>
-		<script type="text/javascript" src="js/Stats.js"></script>
 		
 		<script type="text/javascript">
 
-			if ( !is_browser_compatible() ) {
-			
-				document.getElementById( "oldie" ).style.display = "block";
-				
-			}
-			
-			var statsEnabled = true;
-
-			var container, stats, loader;
+			var container, loader;
 
 			var camera, scene, webglRenderer;
 
@@ -121,7 +52,12 @@
 				document.body.appendChild(container);
 
 				camera = new MThree.Camera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
-				camera.projectionMatrix = MThree.Matrix4.makeOrtho( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -10000, 10000 );
+				camera.projectionMatrix = MThree.Matrix4.makeOrtho( 
+					window.innerWidth / - 2, 
+					window.innerWidth / 2, 
+					window.innerHeight / 2, 
+					window.innerHeight / - 2, -10000, 10000 );
+
 				camera.position.z = 6200;
 
 				scene = new MThree.Scene();
@@ -186,7 +122,9 @@
 															    uniforms: uniforms
 															  } );
 
-				var material2 = new MThree.MeshPhongMaterial( { color: diffuse, specular: specular, ambient: ambient, shininess: shininess } );
+				var material2 = new MThree.MeshPhongMaterial( { 
+					color: diffuse, specular: specular, ambient: ambient, shininess: shininess 
+				} );
 
 				loader = new MThree.Loader( true );
 				document.body.appendChild( loader.statusDomElement );
@@ -196,20 +134,6 @@
 				webglRenderer = new MThree.WebGLRenderer( scene );
 				webglRenderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( webglRenderer.domElement );
-
-				var description = "normal + ao" + ( webglRenderer.supportsVertexTextures() ? " + displacement" : " + <strike>displacement</strike>" );
-				document.getElementById( "description" ).innerHTML = description;
-				document.getElementById( "vt" ).style.display = webglRenderer.supportsVertexTextures() ? "none" : "block";
-				
-				if ( statsEnabled ) {
-
-					stats = new Stats();
-					stats.domElement.style.position = 'absolute';
-					stats.domElement.style.top = '0px';
-					stats.domElement.style.zIndex = 100;
-					container.appendChild( stats.domElement );
-
-				}
 
 			}
 
@@ -256,27 +180,6 @@
 
 				webglRenderer.render( scene, camera );
 
-				if ( statsEnabled ) stats.update();
-
-			}
-
-			function log( text ) {
-
-				var e = document.getElementById("log");
-				e.innerHTML = text + "<br/>" + e.innerHTML;
-
-			}
-			
-			function is_browser_compatible() {
-				
-				// WebGL support
-				
-				try { var test = new Float32Array(1); } catch(e) { return false; }
-				
-				// Web workers
-				
-				return !!window.Worker;
-			
 			}
 
 		</script>

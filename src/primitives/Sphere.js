@@ -7,6 +7,7 @@ import Vertex from "../core/Vertex";
 export default class Sphere extends Geometry {
 
     constructor(radius, segments_width, segments_height, smooth) {
+        
         super()
 
         var gridX = segments_width || 8,

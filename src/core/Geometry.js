@@ -247,6 +247,7 @@ export default class Geometry {
 	}
 
 	computeBoundingBox() {
+
 		if (this.vertices.length > 0) {
 
 			this.bbox = {
@@ -290,10 +291,12 @@ export default class Geometry {
 			});
 
 		}
+
 	}
 
 	
     materialHash(material) {
+
 		let hash_array = [];
 
 		material.forEach(material => {
@@ -317,7 +320,7 @@ export default class Geometry {
 		// which could then use vertex color attributes instead of each being
 		// in its separate VBO
 
-		var f, fl, face, material, vertices, mhash, ghash, hash_map = {};
+		var material, vertices, mhash, ghash, hash_map = {};
 
 		this.faces.forEach((face, index) => {
 			material = face.material;
@@ -360,6 +363,8 @@ export default class Geometry {
     }
 
 	toString() {
+
 		return 'MGeometry ( vertices: ' + this.vertices + ', faces: ' + this.faces + ' )';
+		
 	}
 }

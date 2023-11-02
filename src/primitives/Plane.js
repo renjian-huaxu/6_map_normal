@@ -8,6 +8,7 @@ import Vertex from "../core/Vertex";
 export default class Plane extends Geometry {
 
     constructor(width, height, segments_width, segments_height) {
+        
         super()
 
         var 

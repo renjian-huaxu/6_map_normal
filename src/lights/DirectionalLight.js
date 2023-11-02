@@ -4,6 +4,7 @@ import Light from "./Light";
 export default class DirectionalLight extends Light {
 
     constructor(hex, intensity) {
+        
         super(hex)
 
         this.position = new Vector3( 0, 1, 0 );

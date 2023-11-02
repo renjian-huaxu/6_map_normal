@@ -3,11 +3,13 @@ import Object3D from "./Object3D";
 
 export default class Mesh extends Object3D {
 
-    constructor(geometry, material, normUVs) {
-        super(material)
+    constructor(geometry, materials, normUVs) {
+        super()
 
         this.geometry = geometry;
-        material && (this.material = material instanceof Array ? material : [material]);
+        this.materials = materials 
+                        ? materials instanceof Array ? materials : [materials]
+                        : [];
 
         this.flipSided = false;
         this.doubleSided = false;
@@ -20,6 +22,7 @@ export default class Mesh extends Object3D {
     }
 
     normalizeUVs() {
+        
         this.geometry.uvs.forEach(uvArr => {
             uvArr.forEach(uv => {
                 if (uv.u != 1.0) uv.u = uv.u - Math.floor(uv.u);

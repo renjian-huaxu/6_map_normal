@@ -117,7 +117,8 @@ export default class WebGLRenderer {
 		// material properties (Basic / Lambert / Blinn-Phong shader)
 		// material properties (Depth)
 
-		this.cacheUniformLocations(program, ['viewMatrix', 'modelViewMatrix', 'projectionMatrix', 'normalMatrix', 'objectMatrix', 'cameraPosition',
+		this.cacheUniformLocations(program, [
+			'viewMatrix', 'modelViewMatrix', 'projectionMatrix', 'normalMatrix', 'objectMatrix', 'cameraPosition',
 			'enableLighting', 'ambientLightColor',
 			'material', 'mColor', 'mAmbient', 'mSpecular', 'mShininess', 'mOpacity',
 			'enableMap', 'tMap',
@@ -457,7 +458,7 @@ export default class WebGLRenderer {
 
 		var needsSmoothNormals = false;
 
-		object.material.forEach(meshMaterial => {
+		object.materials.forEach(meshMaterial => {
 			if (meshMaterial instanceof MeshFaceMaterial) {
 
 				geometryChunk.material.forEach(material => {
@@ -866,7 +867,7 @@ export default class WebGLRenderer {
 
 	renderPass(camera, lights, object, geometryChunk, blending, transparent) {
 
-		object.material.forEach(meshMaterial => {
+		object.materials.forEach(meshMaterial => {
 
 			if (meshMaterial instanceof MeshFaceMaterial) {
 
@@ -1099,8 +1100,8 @@ export default class WebGLRenderer {
 
 		}
 
-		_gl.clearColor(0, 0, 0, 1);
-		_gl.clearDepth(1);
+		// _gl.clearColor(0, 0, 0, 1);
+		// _gl.clearDepth(1);
 
 		_gl.enable(_gl.DEPTH_TEST);
 		_gl.depthFunc(_gl.LEQUAL);
@@ -1250,60 +1251,60 @@ export default class WebGLRenderer {
 
 			"void main() {",
 
-			"vec4 mapColor = vec4( 1.0, 1.0, 1.0, 1.0 );",
-			"vec4 cubeColor = vec4( 1.0, 1.0, 1.0, 1.0 );",
+			"	vec4 mapColor = vec4( 1.0, 1.0, 1.0, 1.0 );",
+			"	vec4 cubeColor = vec4( 1.0, 1.0, 1.0, 1.0 );",
 
 			// diffuse map
 
-			"if ( enableMap ) {",
+			"	if ( enableMap ) {",
 
-			"mapColor = texture2D( tMap, vUv );",
+			"		mapColor = texture2D( tMap, vUv );",
 
-			"}",
+			"	}",
 
 			// cube map
 
-			"if ( enableCubeMap ) {",
+			"	if ( enableCubeMap ) {",
 
-			"cubeColor = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) );",
+			"		cubeColor = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) );",
 			// "cubeColor.r = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) ).r;",
 			// "cubeColor.g = textureCube( tCube, vec3( -vReflect.x + 0.005, vReflect.yz ) ).g;",
 			// "cubeColor.b = textureCube( tCube, vec3( -vReflect.x + 0.01, vReflect.yz ) ).b;",
 
-			"}",
+			"	}",
 
-			// Cube
+				// Cube
 
-			"if ( material == 5 ) { ",
+				"if ( material == 5 ) { ",
 
-			"vec3 wPos = cameraPosition - vViewPosition;",
-			"gl_FragColor = textureCube( tCube, vec3( -wPos.x, wPos.yz ) );",
+				"	vec3 wPos = cameraPosition - vViewPosition;",
+				"	gl_FragColor = textureCube( tCube, vec3( -wPos.x, wPos.yz ) );",
 
-			// Normals
+				// Normals
 
-			"} else if ( material == 4 ) { ",
+				"} else if ( material == 4 ) { ",
 
-			"gl_FragColor = vec4( 0.5 * normalize( vNormal ) + 0.5, mOpacity );",
+				"	gl_FragColor = vec4( 0.5 * normalize( vNormal ) + 0.5, mOpacity );",
 
-			// Depth
+				// Depth
 
-			"} else if ( material == 3 ) { ",
+				"} else if ( material == 3 ) { ",
 
-			// this breaks shader validation in Chrome 9.0.576.0 dev
-			// and also latest continuous build Chromium 9.0.583.0 (66089)
-			// (curiously it works in Chrome 9.0.576.0 canary build and Firefox 4b7)
-			//"float w = 1.0 - ( m2Near / ( mFarPlusNear - gl_FragCoord.z * mFarMinusNear ) );",
-			"float w = 0.5;",
+				// this breaks shader validation in Chrome 9.0.576.0 dev
+				// and also latest continuous build Chromium 9.0.583.0 (66089)
+				// (curiously it works in Chrome 9.0.576.0 canary build and Firefox 4b7)
+				//"float w = 1.0 - ( m2Near / ( mFarPlusNear - gl_FragCoord.z * mFarMinusNear ) );",
+				"	float w = 0.5;",
 
-			"gl_FragColor = vec4( w, w, w, mOpacity );",
+				"	gl_FragColor = vec4( w, w, w, mOpacity );",
 
-			// Blinn-Phong
-			// based on o3d example
+				// Blinn-Phong
+				// based on o3d example
 
-			"} else if ( material == 2 ) { ",
+				"} else if ( material == 2 ) { ",
 
-			"vec3 normal = normalize( vNormal );",
-			"vec3 viewPosition = normalize( vViewPosition );",
+				"	vec3 normal = normalize( vNormal );",
+				"	vec3 viewPosition = normalize( vViewPosition );",
 
 			// point lights
 
@@ -1363,53 +1364,53 @@ export default class WebGLRenderer {
 
 			maxDirLights ? "}" : "",
 
-			// all lights contribution summation
+				// all lights contribution summation
 
-			"vec4 totalLight = mAmbient;",
-			maxDirLights ? "totalLight += dirDiffuse + dirSpecular;" : "",
-			maxPointLights ? "totalLight += pointDiffuse + pointSpecular;" : "",
+				"vec4 totalLight = mAmbient;",
+				maxDirLights ? "totalLight += dirDiffuse + dirSpecular;" : "",
+				maxPointLights ? "totalLight += pointDiffuse + pointSpecular;" : "",
 
-			// looks nicer with weighting
+				// looks nicer with weighting
 
-			"if ( mixEnvMap ) {",
+				"if ( mixEnvMap ) {",
 
-			"gl_FragColor = vec4( mix( mapColor.rgb * totalLight.xyz * vLightWeighting, cubeColor.rgb, mReflectivity ), mapColor.a );",
+				"	gl_FragColor = vec4( mix( mapColor.rgb * totalLight.xyz * vLightWeighting, cubeColor.rgb, mReflectivity ), mapColor.a );",
 
-			"} else {",
+				"} else {",
 
-			"gl_FragColor = vec4( mapColor.rgb * cubeColor.rgb * totalLight.xyz * vLightWeighting, mapColor.a );",
+				"	gl_FragColor = vec4( mapColor.rgb * cubeColor.rgb * totalLight.xyz * vLightWeighting, mapColor.a );",
 
-			"}",
+				"}",
 
-			// Lambert: diffuse lighting
+				// Lambert: diffuse lighting
 
-			"} else if ( material == 1 ) {",
+				"} else if ( material == 1 ) {",
 
-			"if ( mixEnvMap ) {",
+				"	if ( mixEnvMap ) {",
 
-			"gl_FragColor = vec4( mix( mColor.rgb * mapColor.rgb * vLightWeighting, cubeColor.rgb, mReflectivity ), mColor.a * mapColor.a );",
+				"		gl_FragColor = vec4( mix( mColor.rgb * mapColor.rgb * vLightWeighting, cubeColor.rgb, mReflectivity ), mColor.a * mapColor.a );",
 
-			"} else {",
+				"	} else {",
 
-			"gl_FragColor = vec4( mColor.rgb * mapColor.rgb * cubeColor.rgb * vLightWeighting, mColor.a * mapColor.a );",
+				"		gl_FragColor = vec4( mColor.rgb * mapColor.rgb * cubeColor.rgb * vLightWeighting, mColor.a * mapColor.a );",
 
-			"}",
+				"	}",
 
-			// Basic: unlit color / texture
+				// Basic: unlit color / texture
 
-			"} else {",
+				"} else {",
 
-			"if ( mixEnvMap ) {",
+				"	if ( mixEnvMap ) {",
 
-			"gl_FragColor = mix( mColor * mapColor, cubeColor, mReflectivity );",
+				"		gl_FragColor = mix( mColor * mapColor, cubeColor, mReflectivity );",
 
-			"} else {",
+				"	} else {",
 
-			"gl_FragColor = mColor * mapColor * cubeColor;",
+				"		gl_FragColor = mColor * mapColor * cubeColor;",
 
-			"}",
+				"	}",
 
-			"}",
+				"}",
 
 			"}"];
 
@@ -1453,59 +1454,59 @@ export default class WebGLRenderer {
 
 			// world space
 
-			"vec4 mPosition = objectMatrix * vec4( position, 1.0 );",
-			"vViewPosition = cameraPosition - mPosition.xyz;",
+			"	vec4 mPosition = objectMatrix * vec4( position, 1.0 );",
+			"	vViewPosition = cameraPosition - mPosition.xyz;",
 
 			// this doesn't work on Mac
 			//"vec3 nWorld = mat3(objectMatrix) * normal;",
-			"vec3 nWorld = mat3( objectMatrix[0].xyz, objectMatrix[1].xyz, objectMatrix[2].xyz ) * normal;",
+			"	vec3 nWorld = mat3( objectMatrix[0].xyz, objectMatrix[1].xyz, objectMatrix[2].xyz ) * normal;",
 
 			// eye space
 
-			"vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
-			"vec3 transformedNormal = normalize( normalMatrix * normal );",
+			"	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+			"	vec3 transformedNormal = normalize( normalMatrix * normal );",
 
-			"if ( !enableLighting ) {",
+			"	if ( !enableLighting ) {",
 
-			"vLightWeighting = vec3( 1.0, 1.0, 1.0 );",
+			"		vLightWeighting = vec3( 1.0, 1.0, 1.0 );",
 
-			"} else {",
+			"	} else {",
 
-			"vLightWeighting = ambientLightColor;",
+			"		vLightWeighting = ambientLightColor;",
 
 			// directional lights
 
 			maxDirLights ? "for( int i = 0; i < MAX_DIR_LIGHTS; i++ ) {" : "",
-			maxDirLights ? "vec4 lDirection = viewMatrix * vec4( directionalLightDirection[ i ], 0.0 );" : "",
-			maxDirLights ? "float directionalLightWeighting = max( dot( transformedNormal, normalize( lDirection.xyz ) ), 0.0 );" : "",
-			maxDirLights ? "vLightWeighting += directionalLightColor[ i ] * directionalLightWeighting;" : "",
+			maxDirLights ? "	vec4 lDirection = viewMatrix * vec4( directionalLightDirection[ i ], 0.0 );" : "",
+			maxDirLights ? "	float directionalLightWeighting = max( dot( transformedNormal, normalize( lDirection.xyz ) ), 0.0 );" : "",
+			maxDirLights ? "	vLightWeighting += directionalLightColor[ i ] * directionalLightWeighting;" : "",
 			maxDirLights ? "}" : "",
 
 			// point lights
 
 			maxPointLights ? "for( int i = 0; i < MAX_POINT_LIGHTS; i++ ) {" : "",
-			maxPointLights ? "vec4 lPosition = viewMatrix * vec4( pointLightPosition[ i ], 1.0 );" : "",
-			maxPointLights ? "vPointLightVector[ i ] = normalize( lPosition.xyz - mvPosition.xyz );" : "",
-			maxPointLights ? "float pointLightWeighting = max( dot( transformedNormal, vPointLightVector[ i ] ), 0.0 );" : "",
-			maxPointLights ? "vLightWeighting += pointLightColor[ i ] * pointLightWeighting;" : "",
+			maxPointLights ? "	vec4 lPosition = viewMatrix * vec4( pointLightPosition[ i ], 1.0 );" : "",
+			maxPointLights ? "	vPointLightVector[ i ] = normalize( lPosition.xyz - mvPosition.xyz );" : "",
+			maxPointLights ? "	float pointLightWeighting = max( dot( transformedNormal, vPointLightVector[ i ] ), 0.0 );" : "",
+			maxPointLights ? "	vLightWeighting += pointLightColor[ i ] * pointLightWeighting;" : "",
 			maxPointLights ? "}" : "",
 
-			"}",
+			"	}",
 
-			"vNormal = transformedNormal;",
-			"vUv = uv;",
+			"	vNormal = transformedNormal;",
+			"	vUv = uv;",
 
-			"if ( useRefract ) {",
+			"	if ( useRefract ) {",
 
-			"vReflect = refract( normalize(mPosition.xyz - cameraPosition), normalize(nWorld.xyz), mRefractionRatio );",
+			"		vReflect = refract( normalize(mPosition.xyz - cameraPosition), normalize(nWorld.xyz), mRefractionRatio );",
 
-			"} else {",
+			"	} else {",
 
-			"vReflect = reflect( normalize(mPosition.xyz - cameraPosition), normalize(nWorld.xyz) );",
+			"		vReflect = reflect( normalize(mPosition.xyz - cameraPosition), normalize(nWorld.xyz) );",
 
-			"}",
+			"	}",
 
-			"gl_Position = projectionMatrix * mvPosition;",
+			"	gl_Position = projectionMatrix * mvPosition;",
 
 			"}"];
 

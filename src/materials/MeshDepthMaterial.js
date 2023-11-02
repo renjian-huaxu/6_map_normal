@@ -3,6 +3,7 @@ import { NormalBlending } from "./Material";
 export default class MeshDepthMaterial {
 
     constructor(parameters) {
+
         this.near = 1;
         this.far = 1000;
         this.opacity = 1;
@@ -24,6 +25,8 @@ export default class MeshDepthMaterial {
     }
 
     toString() {
+
         return 'THREE.MeshDepthMaterial';
+        
     }
 }

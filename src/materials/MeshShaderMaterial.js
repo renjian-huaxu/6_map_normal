@@ -6,6 +6,7 @@ const MeshShaderMaterialCounter = { value: 0 };
 export default class MeshShaderMaterial {
 
     constructor(parameters) {
+
         this.id = MeshShaderMaterialCounter.value ++;
 
         this.fragment_shader = "void main() {}";
@@ -40,6 +41,7 @@ export default class MeshShaderMaterial {
     }
 
     toString() {
+        
         return 'MeshShaderMaterial (<br/>' +
         'id: ' + this.id + '<br/>' +
 

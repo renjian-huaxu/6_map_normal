@@ -17,6 +17,7 @@ const LinearMipMapLinearFilter = 8;
 export default class Texture {
 
     constructor(image, mapping, wrap_s, wrap_t, mag_filter, min_filter) {
+        
         this.image = image;
 
         this.mapping = mapping !== undefined ? mapping : new UVMapping();

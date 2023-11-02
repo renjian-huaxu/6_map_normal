@@ -39,7 +39,9 @@ export default class Color {
   }
 
   updateHex() {
+
     this.hex = ~~(this.r * 255) << 16 ^ ~~(this.g * 255) << 8 ^ ~~(this.b * 255);
+
   }
 
   updateRGBA() {
@@ -51,10 +53,14 @@ export default class Color {
   }
 
   updateStyleString() {
+
     this.__styleString = 'rgb(' + ~~(this.r * 255) + ',' + ~~(this.g * 255) + ',' + ~~(this.b * 255) + ')';
+
   }
 
   toString() {
+
     return 'MTHREE.Color ( r: ' + this.r + ', g: ' + this.g + ', b: ' + this.b + ', hex: ' + this.hex + ' )';
+    
   }
 } 

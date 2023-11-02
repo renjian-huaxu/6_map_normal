@@ -185,7 +185,13 @@
 				image.onload = function () { this.loaded = true; };
 				image.src = path;
 
-				return new MThree.MeshLambertMaterial( { map: new MThree.Texture( image, new MThree.UVMapping(), MThree.ClampToEdgeWrapping, MThree.ClampToEdgeWrapping, MThree.NearestFilter, MThree.LinearMipMapLinearFilter ) } );
+				return new MThree.MeshLambertMaterial( { map: new MThree.Texture( 
+					image, 
+					new MThree.UVMapping(), 
+					MThree.ClampToEdgeWrapping, 
+					MThree.ClampToEdgeWrapping, 
+					MThree.NearestFilter, 
+					MThree.LinearMipMapLinearFilter ) } );
 
 			}
 

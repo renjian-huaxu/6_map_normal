@@ -2,10 +2,12 @@
 export default class Vector4 {
 
   constructor(x, y, z, w) {
+
     this.x = x || 0;
     this.y = y || 0;
     this.z = z || 0;
     this.w = w || 1;
+
   }
 
   set(x, y, z, w) {
@@ -14,6 +16,7 @@ export default class Vector4 {
     this.y = y;
     this.z = z;
     this.w = w;
+
     return this;
 
   }
@@ -24,6 +27,7 @@ export default class Vector4 {
     this.y = v.y;
     this.z = v.z;
     this.w = v.w;
+
     return this;
 
   }
@@ -34,6 +38,7 @@ export default class Vector4 {
     this.y = v1.y + v2.y;
     this.z = v1.z + v2.z;
     this.w = v1.w + v2.w;
+
     return this;
 
   }
@@ -44,6 +49,7 @@ export default class Vector4 {
     this.y += v.y;
     this.z += v.z;
     this.w += v.w;
+
     return this;
 
   }
@@ -54,6 +60,7 @@ export default class Vector4 {
     this.y = v1.y - v2.y;
     this.z = v1.z - v2.z;
     this.w = v1.w - v2.w;
+
     return this;
 
   }
@@ -64,6 +71,7 @@ export default class Vector4 {
     this.y -= v.y;
     this.z -= v.z;
     this.w -= v.w;
+    
     return this;
 
   }

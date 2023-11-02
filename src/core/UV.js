@@ -9,11 +9,15 @@ export default class UV {
     }
 
     copy(uv) {
+
         this.u = uv.u;
 		this.v = uv.v;
+
     }
 
     toString() {
+
         return 'MTHREE.UV (' + this.u + ', ' + this.v + ')';
+        
     }
 }

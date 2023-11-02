@@ -7,7 +7,6 @@ export default class Camera {
 
 		this.position = new Vector3( 0, 0, 0 );
 		this.target = { position: new Vector3( 0, 0, 0 ) };
-	
 		this.up = new Vector3( 0, 1, 0 );
 		this.matrix = new Matrix4();
 		this.projectionMatrix = Matrix4.makePerspective( fov, aspect, near, far );
@@ -18,7 +17,12 @@ export default class Camera {
 
 	translateX( amount ) {
 
-		var vector = this.target.position.clone().subSelf( this.position ).normalize().multiplyScalar( amount );
+		var vector = this.target.position
+			.clone()
+			.subSelf( this.position )
+			.normalize()
+			.multiplyScalar( amount );
+
 		vector.cross( vector.clone(), this.up );
 
 		this.position.addSelf( vector );
@@ -28,7 +32,11 @@ export default class Camera {
 
 	translateZ( amount ) {
 
-		var vector = this.target.position.clone().subSelf( this.position ).normalize().multiplyScalar( amount );
+		var vector = this.target.position
+			.clone()
+			.subSelf( this.position )
+			.normalize()
+			.multiplyScalar( amount );
 
 		this.position.subSelf( vector );
 		this.target.position.subSelf( vector );
@@ -36,10 +44,14 @@ export default class Camera {
 	}
 
 	updateMatrix() {
+
 		this.matrix.lookAt( this.position, this.target.position, this.up );
+
 	}
 
 	toString() {
+
 		return 'MTHREE.Camera ( ' + this.position + ', ' + this.target.position + ' )';
+		
 	}
 }

@@ -93,6 +93,7 @@ export default class Vector2 {
 
     this.x = - this.x;
     this.y = - this.y;
+
     return this;
 
   }
@@ -104,6 +105,8 @@ export default class Vector2 {
   }
 
   toString() {
+
     return 'MTHREE.Vector2 (' + this.x + ', ' + this.y + ')';
+    
   }
 }
