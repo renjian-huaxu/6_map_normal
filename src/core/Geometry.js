@@ -43,19 +43,23 @@ export default class Geometry {
 
 	computeFaceNormals ( useVertexNormals ) {
 
-		var cb = new Vector3(), ab = new Vector3();
+		var cb = new Vector3(), 
+			ab = new Vector3();
 
 		this.vertices.forEach(vertex => {
 			vertex.normal.set( 0, 0, 0 );
 		})
 
 		this.faces.forEach(face => {
+
 			if ( useVertexNormals && face.vertexNormals.length  ) {
 
 				cb.set( 0, 0, 0 );
 
 				face.normal.forEach((_, index) => {
+
 					cb.addSelf( face.vertexNormals[index] );
+
 				})
 
 				cb.divideScalar( 3 );
@@ -100,6 +104,7 @@ export default class Geometry {
 		})
 
 		this.faces.forEach(face => {
+
 			if ( face instanceof Face3 ) {
 
 				vertices[ face.a ].addSelf( face.normal );
@@ -121,6 +126,7 @@ export default class Geometry {
 		})
 
 		this.faces.forEach(face => {
+
 			if ( face instanceof Face3 ) {
 
 				face.vertexNormals[ 0 ] = vertices[ face.a ].clone();
@@ -157,7 +163,7 @@ export default class Geometry {
 		
 		
 		function handleTriangle( context, a, b, c ) {
-			
+
 			const vA = context.vertices[ a ].position;
 			const vB = context.vertices[ b ].position;
 			const vC = context.vertices[ c ].position;
@@ -197,6 +203,7 @@ export default class Geometry {
 		}
 
 		this.faces.forEach((face, index) => {
+
 			uv = this.uvs[ index ];
 
 			if ( face instanceof Face3 ) {
@@ -225,6 +232,7 @@ export default class Geometry {
 		})
 
 		this.vertices.forEach((vertex, index) => {
+
 			n.copy( vertex.normal );
 			const t = tan1[ index ];
 			
@@ -248,49 +256,49 @@ export default class Geometry {
 
 	computeBoundingBox() {
 
-		if (this.vertices.length > 0) {
+		// if (this.vertices.length > 0) {
 
-			this.bbox = {
-				'x': [this.vertices[0].position.x, this.vertices[0].position.x],
-				'y': [this.vertices[0].position.y, this.vertices[0].position.y],
-				'z': [this.vertices[0].position.z, this.vertices[0].position.z]
-			};
+		// 	this.bbox = {
+		// 		'x': [this.vertices[0].position.x, this.vertices[0].position.x],
+		// 		'y': [this.vertices[0].position.y, this.vertices[0].position.y],
+		// 		'z': [this.vertices[0].position.z, this.vertices[0].position.z]
+		// 	};
 
-			this.vertices.forEach(vertex => {
+		// 	this.vertices.forEach(vertex => {
 
-				if (vertex.position.x < this.bbox.x[0]) {
+		// 		if (vertex.position.x < this.bbox.x[0]) {
 
-					this.bbox.x[0] = vertex.position.x;
+		// 			this.bbox.x[0] = vertex.position.x;
 
-				} else if (vertex.position.x > this.bbox.x[1]) {
+		// 		} else if (vertex.position.x > this.bbox.x[1]) {
 
-					this.bbox.x[1] = vertex.position.x;
+		// 			this.bbox.x[1] = vertex.position.x;
 
-				}
+		// 		}
 
-				if (vertex.position.y < this.bbox.y[0]) {
+		// 		if (vertex.position.y < this.bbox.y[0]) {
 
-					this.bbox.y[0] = vertex.position.y;
+		// 			this.bbox.y[0] = vertex.position.y;
 
-				} else if (vertex.position.y > this.bbox.y[1]) {
+		// 		} else if (vertex.position.y > this.bbox.y[1]) {
 
-					this.bbox.y[1] = vertex.position.y;
+		// 			this.bbox.y[1] = vertex.position.y;
 
-				}
+		// 		}
 
-				if (vertex.position.z < this.bbox.z[0]) {
+		// 		if (vertex.position.z < this.bbox.z[0]) {
 
-					this.bbox.z[0] = vertex.position.z;
+		// 			this.bbox.z[0] = vertex.position.z;
 
-				} else if (vertex.position.z > this.bbox.z[1]) {
+		// 		} else if (vertex.position.z > this.bbox.z[1]) {
 
-					this.bbox.z[1] = vertex.position.z;
+		// 			this.bbox.z[1] = vertex.position.z;
 
-				}
+		// 		}
 
-			});
+		// 	});
 
-		}
+		// }
 
 	}
 
@@ -323,6 +331,7 @@ export default class Geometry {
 		var material, vertices, mhash, ghash, hash_map = {};
 
 		this.faces.forEach((face, index) => {
+
 			material = face.material;
 
 			mhash = this.materialHash( material );

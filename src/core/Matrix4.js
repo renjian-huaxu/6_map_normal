@@ -9,38 +9,22 @@ export default class Matrix4 {
     // n31: 0, n32: 0, n33: 1, n34: 0,
     // n41: 0, n42: 0, n43: 0, n44: 1,
 
-    n11
-    n12
-    n13
-    n14
-
-    n21
-    n22
-    n23
-    n24
-
-    n31
-    n32
-    n33
-    n34
-
-    n41
-    n42
-    n43
-    n44
-
     constructor(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
+
         this.n11 = n11 || 1; this.n12 = n12 || 0; this.n13 = n13 || 0; this.n14 = n14 || 0;
         this.n21 = n21 || 0; this.n22 = n22 || 1; this.n23 = n23 || 0; this.n24 = n24 || 0;
         this.n31 = n31 || 0; this.n32 = n32 || 0; this.n33 = n33 || 1; this.n34 = n34 || 0;
         this.n41 = n41 || 0; this.n42 = n42 || 0; this.n43 = n43 || 0; this.n44 = n44 || 1;
+
     }
 
     identity() {
+
         this.n11 = 1; this.n12 = 0; this.n13 = 0; this.n14 = 0;
         this.n21 = 0; this.n22 = 1; this.n23 = 0; this.n24 = 0;
         this.n31 = 0; this.n32 = 0; this.n33 = 1; this.n34 = 0;
         this.n41 = 0; this.n42 = 0; this.n43 = 0; this.n44 = 1;
+
         return this;
     }
 
@@ -56,10 +40,12 @@ export default class Matrix4 {
 	}
 
     copy(m) {
+
         this.n11 = m.n11; this.n12 = m.n12; this.n13 = m.n13; this.n14 = m.n14;
         this.n21 = m.n21; this.n22 = m.n22; this.n23 = m.n23; this.n24 = m.n24;
         this.n31 = m.n31; this.n32 = m.n32; this.n33 = m.n33; this.n34 = m.n34;
         this.n41 = m.n41; this.n42 = m.n42; this.n43 = m.n43; this.n44 = m.n44;
+
         return this;
     }
 
@@ -121,27 +107,37 @@ export default class Matrix4 {
 
     multiply(a, b) {
 
-        this.n11 = a.n11 * b.n11 + a.n12 * b.n21 + a.n13 * b.n31 + a.n14 * b.n41;
-        this.n12 = a.n11 * b.n12 + a.n12 * b.n22 + a.n13 * b.n32 + a.n14 * b.n42;
-        this.n13 = a.n11 * b.n13 + a.n12 * b.n23 + a.n13 * b.n33 + a.n14 * b.n43;
-        this.n14 = a.n11 * b.n14 + a.n12 * b.n24 + a.n13 * b.n34 + a.n14 * b.n44;
+        var a11 = a.n11, a12 = a.n12, a13 = a.n13, a14 = a.n14,
+		a21 = a.n21, a22 = a.n22, a23 = a.n23, a24 = a.n24,
+		a31 = a.n31, a32 = a.n32, a33 = a.n33, a34 = a.n34,
+		a41 = a.n41, a42 = a.n42, a43 = a.n43, a44 = a.n44,
 
-        this.n21 = a.n21 * b.n11 + a.n22 * b.n21 + a.n23 * b.n31 + a.n24 * b.n41;
-        this.n22 = a.n21 * b.n12 + a.n22 * b.n22 + a.n23 * b.n32 + a.n24 * b.n42;
-        this.n23 = a.n21 * b.n13 + a.n22 * b.n23 + a.n23 * b.n33 + a.n24 * b.n43;
-        this.n24 = a.n21 * b.n14 + a.n22 * b.n24 + a.n23 * b.n34 + a.n24 * b.n44;
+		b11 = b.n11, b12 = b.n12, b13 = b.n13, b14 = b.n14,
+		b21 = b.n21, b22 = b.n22, b23 = b.n23, b24 = b.n24,
+		b31 = b.n31, b32 = b.n32, b33 = b.n33, b34 = b.n34,
+		b41 = b.n41, b42 = b.n42, b43 = b.n43, b44 = b.n44;
 
-        this.n31 = a.n31 * b.n11 + a.n32 * b.n21 + a.n33 * b.n31 + a.n34 * b.n41;
-        this.n32 = a.n31 * b.n12 + a.n32 * b.n22 + a.n33 * b.n32 + a.n34 * b.n42;
-        this.n33 = a.n31 * b.n13 + a.n32 * b.n23 + a.n33 * b.n33 + a.n34 * b.n43;
-        this.n34 = a.n31 * b.n14 + a.n32 * b.n24 + a.n33 * b.n34 + a.n34 * b.n44;
+		this.n11 = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
+		this.n12 = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
+		this.n13 = a11 * b13 + a12 * b23 + a13 * b33 + a14 * b43;
+		this.n14 = a11 * b14 + a12 * b24 + a13 * b34 + a14 * b44;
 
-        this.n41 = a.n41 * b.n11 + a.n42 * b.n21 + a.n43 * b.n31 + a.n44 * b.n41;
-        this.n42 = a.n41 * b.n12 + a.n42 * b.n22 + a.n43 * b.n32 + a.n44 * b.n42;
-        this.n43 = a.n41 * b.n13 + a.n42 * b.n23 + a.n43 * b.n33 + a.n44 * b.n43;
-        this.n44 = a.n41 * b.n14 + a.n42 * b.n24 + a.n43 * b.n34 + a.n44 * b.n44;
+		this.n21 = a21 * b11 + a22 * b21 + a23 * b31 + a24 * b41;
+		this.n22 = a21 * b12 + a22 * b22 + a23 * b32 + a24 * b42;
+		this.n23 = a21 * b13 + a22 * b23 + a23 * b33 + a24 * b43;
+		this.n24 = a21 * b14 + a22 * b24 + a23 * b34 + a24 * b44;
 
-        return this;
+		this.n31 = a31 * b11 + a32 * b21 + a33 * b31 + a34 * b41;
+		this.n32 = a31 * b12 + a32 * b22 + a33 * b32 + a34 * b42;
+		this.n33 = a31 * b13 + a32 * b23 + a33 * b33 + a34 * b43;
+		this.n34 = a31 * b14 + a32 * b24 + a33 * b34 + a34 * b44;
+
+		this.n41 = a41 * b11 + a42 * b21 + a43 * b31 + a44 * b41;
+		this.n42 = a41 * b12 + a42 * b22 + a43 * b32 + a44 * b42;
+		this.n43 = a41 * b13 + a42 * b23 + a43 * b33 + a44 * b43;
+		this.n44 = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
+
+		return this;
     }
 
     multiplySelf(m) {
@@ -219,6 +215,7 @@ export default class Matrix4 {
     }
 
     transpose() {
+
         function swap(obj, p1, p2) {
             var aux = obj[p1];
             obj[p1] = obj[p2];
@@ -231,15 +228,19 @@ export default class Matrix4 {
         swap(this, 'n41', 'n14');
         swap(this, 'n42', 'n24');
         swap(this, 'n43', 'n34');
+
         return this;
     }
 
     clone() {
+
         var m = new Matrix4();
+
         m.n11 = this.n11; m.n12 = this.n12; m.n13 = this.n13; m.n14 = this.n14;
         m.n21 = this.n21; m.n22 = this.n22; m.n23 = this.n23; m.n24 = this.n24;
         m.n31 = this.n31; m.n32 = this.n32; m.n33 = this.n33; m.n34 = this.n34;
         m.n41 = this.n41; m.n42 = this.n42; m.n43 = this.n43; m.n44 = this.n44;
+        
         return m;
     }
 
@@ -440,17 +441,17 @@ export default class Matrix4 {
 
         m = new Matrix4();
         w = right - left;
-        h = bottom - top;
+        h = top - bottom;
         p = far - near;
-        x = (right + left) / w;
-        y = (bottom + top) / h;
-        z = (far + near) / p;
-
-        m.n11 = 2 / w; m.n12 = 0; m.n13 = 0; m.n14 = -x;
-        m.n21 = 0; m.n22 = 2 / h; m.n23 = 0; m.n24 = -y;
-        m.n31 = 0; m.n32 = 0; m.n33 = -2 / p; m.n34 = -z;
-        m.n41 = 0; m.n42 = 0; m.n43 = 0; m.n44 = 1;
-
+        x = ( right + left ) / w;
+        y = ( top + bottom ) / h;
+        z = ( far + near ) / p;
+    
+        m.n11 = 2 / w; m.n12 = 0;     m.n13 = 0;      m.n14 = -x;
+        m.n21 = 0;     m.n22 = 2 / h; m.n23 = 0;      m.n24 = -y;
+        m.n31 = 0;     m.n32 = 0;     m.n33 = -2 / p; m.n34 = -z;
+        m.n41 = 0;     m.n42 = 0;     m.n43 = 0;      m.n44 = 1;
+    
         return m;
 
     }

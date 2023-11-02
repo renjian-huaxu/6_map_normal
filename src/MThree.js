@@ -51,8 +51,6 @@ import Cylinder from "./primitives/Cylinder";
 import Sphere from "./primitives/Sphere";
 
 
-import Loader from "./extras/io/Loader";
-
 export default { 
     Color,
     Vector2,
@@ -104,6 +102,5 @@ export default {
     Cylinder,
     Sphere,
 
-    Loader
 
 }
